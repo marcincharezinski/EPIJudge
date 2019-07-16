@@ -10,33 +10,69 @@ public class DutchNationalFlag {
   public enum Color { RED, WHITE, BLUE }
 
   public static void dutchFlagPartition(int pivotIndex, List<Color> A) {
-//    [2,0,0,1,2,1]
-//    [1,0,0,1,2,2]
 
+
+    System.out.println("PIVOT: " + A.get(pivotIndex).ordinal());
+
+    if(A.get(pivotIndex).ordinal() == 2){
+      movetoRight(A);
+    }
+    if(A.get(pivotIndex).ordinal() == 0){
+      movetoLeft(A);
+    }
+    if(A.get(pivotIndex).ordinal() == 1){
+      movetoRight(A);
+      movetoLeft(A);
+    }
+
+  }
+
+  static void movetoRight(List<Color> A){
 
     int start = 0;
     int end = A.size()-1;
-    Color pivot = A.get(pivotIndex);
 
     while(start < end) {
 
-      if (A.get(start) == pivot) {
-        while (A.get(end) != pivot) {
+      if (A.get(start).ordinal() == 2) {
+        while (A.get(end).ordinal() == 2 && start < end) {
           end--;
         }
-        Collections.swap(A, start, end);
-        start++;
-      }
-
-      if (A.get(start) != pivot) {
         Collections.swap(A, start, end);
         start++;
         end--;
       }
 
+      if (A.get(start).ordinal() != 2) {
+        start++;
+      }
+
     }
-    return;
+
   }
+
+  static void movetoLeft(List<Color> A){
+
+    int start = 0;
+    int end = A.size()-1;
+
+    while(start < end) {
+
+      if (A.get(start).ordinal() != 0) {
+        while (A.get(end).ordinal() != 0 && start < end) {
+          end--;
+        }
+        Collections.swap(A, start, end);
+        start++;
+        end--;
+      } else {
+        start++;
+      }
+
+    }
+
+  }
+
   @EpiTest(testDataFile = "dutch_national_flag.tsv")
   public static void dutchFlagPartitionWrapper(TimedExecutor executor,
                                                List<Integer> A, int pivotIdx)
